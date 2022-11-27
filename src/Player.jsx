@@ -2,10 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import css from  './Player.module.css';
 function Player(props) {
     const [loading, setLoading] = useState(true);
+    const [progress, setprogress] = useState(0);
+    const [activated, setActivated] = useState(true);
     const [fetchError, setFetchError] = useState(false);
+    const [duration, setDuration] = useState(0);
+    const [currentTime, setCurrentTime] = useState(0);
     const video = useRef(null);
 
-
+    const videoPaused = () => {};
+    const videoPlaying = () => {};
     const videoLoaded = () => {
         setLoading(false);
     };
@@ -19,8 +24,12 @@ function Player(props) {
         setLoading(false);
         setFetchError(true);
     };
+    const videoTimeUpdate = ({target}) => {
+        setprogress(((target.currentTime / target.duration) * 100).toFixed(2));
+        setCurrentTime(target.currentTime);
+    };
     const videoMetaDataLoaded = ({target}) => {
-        console.log(target);
+        setDuration(target.duration);
     };
     return (
         <div className={css.player}>
@@ -32,6 +41,7 @@ function Player(props) {
                     onError={videoLoadError}
                     onCanPlay={videoCanPlay}
                     onLoadedData={videoLoaded}
+                    onTimeUpdate={videoTimeUpdate}
                     onLoadedMetadata={videoMetaDataLoaded}
                     onPlaying={videoLoaded}
                     onWaiting={videoWaiting}
@@ -51,13 +61,33 @@ function Player(props) {
                 
                 </div>}
             </div>
+            <div className={`${css.controls} ${activated ? css.visible : ''}}`}>
+                <div className={css.c_row}>
+                    <div className={css.seeker}>
+                        <input type="range" step={0.01} min={0} max={100} defaultValue={progress} className={css.range} onInput={(e) => console.log(e.target.value)} />
+                    </div>
+                </div>
+                <div className={css.c_row}>
+                    <div className={css.panel}>
+                        <div className={css.c_time}>{parseTime(currentTime)} / {parseTime(duration)}</div>
+                    </div>
+                    <div className={css.panel}></div>
+                    </div>
+            </div>
         </div>
     );
 };
 
 export default Player;
 
+function parseTime(totalSeconds) {
+    let hours = Math.floor(totalSeconds / 3600).toFixed(0);
+    totalSeconds %= 3600;
+    let minutes = Math.floor(totalSeconds / 60).toFixed(0);
+    let seconds = (totalSeconds % 60).toFixed(0);
 
+    return ((hours > 0) ? String(hours).padStart(2, "0") + ':' : '') + String(minutes).padStart(2, "0") + ':' + String(seconds).padStart(2, "0");
+};
 
 function Loader() {
     return (
