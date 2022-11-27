@@ -1,0 +1,61 @@
+.player {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    background-color: #000;
+}
+.media {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.video {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+}
+
+.cover {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.loadersvg {
+    display: block;
+    width: 4em;
+    height: 4em;
+    margin: auto;
+    animation: svg_rotate 3s ease 0s infinite;
+}
+@keyframes svg_rotate {
+    0% {
+        rotate: 0deg;
+    }
+    100% {
+        rotate: 360deg;
+    }
+}
+
+
+.logger {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    background-color: #0009;
+    padding: 1em;
+    border-radius: .5em;
+    border: 1px solid #0009;
+}
