@@ -145,6 +145,10 @@ function Player(props) {
     };
 
     useEffect(() => {
+        setActivated(!fetchError);
+    }, [setActivated, fetchError]);
+
+    useEffect(() => {
 
         document.addEventListener('fullscreenchange', videoActionFullscreenHandler, false);
         document.addEventListener('mozfullscreenchange', videoActionFullscreenHandler, false);
